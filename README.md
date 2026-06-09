@@ -23,29 +23,55 @@ CarbonWise is a gamified, AI-driven carbon tracking and reduction application de
 
 ---
 
-## Quick Start (Local Run)
+## 🚀 Quick Start (Local Run)
 
-We have created an automated startup script `run_project.ps1` that will install all dependencies (Python Virtual Env and Node Modules) and run both servers in separate windows.
+We have transformed the architecture into a **Single Application Server**. The FastAPI backend automatically builds the React frontend and serves both the API and the web interface from a single port!
 
 ### Instructions:
-1. Open **PowerShell** in your project directory: `c:\Users\yjasw\Downloads\Hack2skill promptwars2`.
+1. Open your terminal in the project directory.
 2. Run the startup script:
-   ```powershell
-   ./run_project.ps1
+   ```bash
+   python run.py
    ```
-3. The script will:
-   - Create a Python virtualenv inside `backend/venv/` and install Pydantic, FastAPI, and GCP packages.
-   - Install all frontend dependencies (React, Lucide icons, Vite).
-   - Launch the FastAPI Backend on [http://localhost:8000](http://localhost:8000).
-   - Launch the React Frontend on [http://localhost:5173](http://localhost:5173).
+3. The script will automatically:
+   - Install all required Python backend dependencies.
+   - Install Node Modules and build the React frontend (`npm install && npm run build`).
+   - Launch the unified Server on **[http://localhost:8000](http://localhost:8000)**.
 
 ---
 
-## How to Switch to Real Google Cloud APIs
-By default, the application is configured to run **100% locally** (it will use offline simulated OCR and local storage for uploads so you can test immediately). 
+## ☁️ Deploying to Google Cloud Run
 
-To enable real Google Cloud features:
+This project includes a `Dockerfile` pre-configured to build the frontend and serve it alongside the Python backend in a single container.
+
+### Deployment Instructions:
+1. Open [Google Cloud Console](https://console.cloud.google.com/) and launch **Cloud Shell**.
+2. Clone your repository:
+   ```bash
+   git clone https://github.com/yjaswanth78/CarbonWise.git
+   cd CarbonWise
+   ```
+3. Grant permissions to the default build service account:
+   ```bash
+   gcloud projects add-iam-policy-binding YOUR_PROJECT_ID --member="serviceAccount:YOUR_PROJECT_NUMBER-compute@developer.gserviceaccount.com" --role="roles/editor"
+   ```
+4. Deploy the application:
+   ```bash
+   gcloud run deploy carbonwise --source . --region=us-central1 --allow-unauthenticated
+   ```
+
+*Once deployed, Google Cloud will provide you with a live `https://...` link to view your application!*
+
+---
+
+## ☁️ Google Cloud Integrations
+
+The application supports real Google Cloud Storage (for permanently saving uploaded images) and Google Cloud Vision (for AI-powered OCR scanning). 
+
+By default, the application uses these GCP services. If you do not have GCP setup, you can revert back to "Local Simulation Mode".
+
+**To configure GCP:**
 1. Open `backend/app/config.py`.
 2. Set `USE_GCP = True`.
-3. Set your `BUCKET_NAME` to your actual GCS bucket name (e.g. `carbonwise-receipts-497104`).
-4. Ensure your service account key file is named `credentials.json` and resides inside the `backend/` directory.
+3. Set your `BUCKET_NAME` to your actual GCS bucket name (e.g. `carbonwise-receipts`).
+4. Ensure your project has the **Cloud Vision API** and **Cloud Storage API** enabled. When deployed on Cloud Run, the credentials are automatically handled securely!
