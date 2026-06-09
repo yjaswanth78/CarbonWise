@@ -1,7 +1,7 @@
 # 🌍 CarbonWise
 **AI-Powered Gamified Carbon Footprint Tracker**
 
-[![Live Demo](https://img.shields.io/badge/Live_Demo-Click_Here-success?style=for-the-badge)](https://carbonwise-365027537314.us-central1.run.app)
+[![Live Demo](https://img.shields.io/badge/Live_Demo-Click_Here-success?style=for-the-badge)](https://carbonwise-365027537314.us-central1.run.app/)
 *(Deployed on Google Cloud Run)*
 
 CarbonWise is a gamified, AI-driven carbon tracking and reduction application designed for the **PromptWars** competition. It automates footprint logging through smart features like grocery receipt scanning, standby energy audits, and neighborhood tool sharing, replacing tedious manual data entry with engaging, automated feedback.
