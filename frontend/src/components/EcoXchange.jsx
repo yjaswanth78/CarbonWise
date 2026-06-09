@@ -124,9 +124,10 @@ export default function EcoXchange({ username, refreshProfile, API_BASE }) {
       {/* Search and Filters Bar */}
       <div style={{ display: 'flex', gap: '1rem', marginBottom: '1.5rem' }}>
         <div style={{ position: 'relative', flex: 1 }}>
-          <Search size={18} style={{ position: 'absolute', left: '12px', top: '12px', color: 'var(--text-muted)' }} />
+          <Search size={18} aria-hidden="true" style={{ position: 'absolute', left: '12px', top: '12px', color: 'var(--text-muted)' }} />
           <input 
             type="text" 
+            aria-label="Search items"
             placeholder="Search tools, tents, appliance name..." 
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
@@ -240,8 +241,9 @@ export default function EcoXchange({ username, refreshProfile, API_BASE }) {
             
             <form onSubmit={handlePost} style={{ display: 'flex', flexDirection: 'column', gap: '1.2rem' }}>
               <div>
-                <label style={{ display: 'block', fontSize: '0.85rem', color: 'var(--text-secondary)', marginBottom: '0.5rem' }}>Item Title</label>
+                <label htmlFor="postTitle" style={{ display: 'block', fontSize: '0.85rem', color: 'var(--text-secondary)', marginBottom: '0.5rem' }}>Item Title</label>
                 <input 
+                  id="postTitle"
                   type="text" 
                   placeholder="e.g. Black & Decker Drill, Camping Tent" 
                   value={newTitle}
@@ -252,8 +254,9 @@ export default function EcoXchange({ username, refreshProfile, API_BASE }) {
               </div>
 
               <div>
-                <label style={{ display: 'block', fontSize: '0.85rem', color: 'var(--text-secondary)', marginBottom: '0.5rem' }}>Short Description</label>
+                <label htmlFor="postDesc" style={{ display: 'block', fontSize: '0.85rem', color: 'var(--text-secondary)', marginBottom: '0.5rem' }}>Short Description</label>
                 <textarea 
+                  id="postDesc"
                   placeholder="Mention availability, tool conditions, or contact info..."
                   value={newDesc}
                   onChange={(e) => setNewDesc(e.target.value)}
@@ -264,8 +267,9 @@ export default function EcoXchange({ username, refreshProfile, API_BASE }) {
 
               <div style={{ display: 'grid', gridTemplateColumns: '1.2fr 1fr', gap: '1rem' }}>
                 <div>
-                  <label style={{ display: 'block', fontSize: '0.85rem', color: 'var(--text-secondary)', marginBottom: '0.5rem' }}>Category</label>
+                  <label htmlFor="postCat" style={{ display: 'block', fontSize: '0.85rem', color: 'var(--text-secondary)', marginBottom: '0.5rem' }}>Category</label>
                   <select 
+                    id="postCat"
                     value={newCat} 
                     onChange={(e) => setNewCat(e.target.value)}
                     style={{ width: '100%' }}
@@ -279,8 +283,9 @@ export default function EcoXchange({ username, refreshProfile, API_BASE }) {
                 </div>
 
                 <div>
-                  <label style={{ display: 'block', fontSize: '0.85rem', color: 'var(--text-secondary)', marginBottom: '0.5rem' }}>Production Offset</label>
+                  <label htmlFor="postOffset" style={{ display: 'block', fontSize: '0.85rem', color: 'var(--text-secondary)', marginBottom: '0.5rem' }}>Production Offset</label>
                   <select 
+                    id="postOffset"
                     value={newAvoidedCO2} 
                     onChange={(e) => setNewAvoidedCO2(e.target.value)}
                     style={{ width: '100%' }}

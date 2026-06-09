@@ -37,7 +37,11 @@ app.add_middleware(SecurityHeadersMiddleware)
 # Add CORS Middleware to connect with React Frontend
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # Allow all origins for dev/hackathon
+    allow_origins=[
+        "http://localhost:5173", 
+        "http://localhost:8000",
+        "https://carbonwise-365027537314.us-central1.run.app"
+    ],  # Strict origins for security
     allow_credentials=True,
     allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allow_headers=["*"],

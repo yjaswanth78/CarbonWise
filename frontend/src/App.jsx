@@ -166,7 +166,7 @@ export default function App() {
           textAlign: 'center',
           boxShadow: '0 20px 40px rgba(0,0,0,0.5)'
         }}>
-          <div style={{ display: 'inline-flex', padding: '1rem', background: 'rgba(34,197,94,0.1)', borderRadius: '50%', marginBottom: '1rem' }}>
+          <div style={{ display: 'inline-flex', padding: '1rem', background: 'rgba(34,197,94,0.1)', borderRadius: '50%', marginBottom: '1rem' }} aria-hidden="true">
             <Leaf size={48} className="gradient-text" style={{ stroke: '#22c55e' }} />
           </div>
           <h1 className="gradient-text" style={{ fontSize: '2.5rem', fontWeight: '800', marginBottom: '0.5rem' }}>CarbonWise</h1>
@@ -189,8 +189,9 @@ export default function App() {
           {!isRegistering ? (
             <form onSubmit={handleLogin} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
               <div style={{ textAlign: 'left' }}>
-                <label style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', marginBottom: '0.5rem', display: 'block' }}>Username</label>
+                <label htmlFor="authInputLogin" style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', marginBottom: '0.5rem', display: 'block' }}>Username</label>
                 <input 
+                  id="authInputLogin"
                   type="text" 
                   placeholder="e.g. greencommuter10"
                   value={authInput}
@@ -206,8 +207,9 @@ export default function App() {
           ) : (
             <form onSubmit={handleRegister} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
               <div style={{ textAlign: 'left' }}>
-                <label style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', display: 'block', marginBottom: '0.25rem' }}>Confirm Username</label>
+                <label htmlFor="authInputReg" style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', display: 'block', marginBottom: '0.25rem' }}>Confirm Username</label>
                 <input 
+                  id="authInputReg"
                   type="text" 
                   value={authInput} 
                   disabled
@@ -215,8 +217,9 @@ export default function App() {
                 />
               </div>
               <div style={{ textAlign: 'left' }}>
-                <label style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', marginBottom: '0.5rem', display: 'block' }}>Email Address</label>
+                <label htmlFor="emailInputReg" style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', marginBottom: '0.5rem', display: 'block' }}>Email Address</label>
                 <input 
+                  id="emailInputReg"
                   type="email" 
                   placeholder="you@example.com"
                   value={emailInput}
@@ -433,6 +436,7 @@ export default function App() {
               return (
                 <button
                   key={t.id}
+                  aria-label={t.label}
                   onClick={() => setActiveTab(t.id)}
                   style={{
                     display: 'flex',

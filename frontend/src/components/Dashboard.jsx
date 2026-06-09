@@ -205,6 +205,8 @@ export default function Dashboard({ userProfile, refreshProfile, API_BASE }) {
             ref={canvasRef} 
             width={380} 
             height={280} 
+            role="img"
+            aria-label="Interactive ecosystem visualization"
             style={{ width: '100%', height: '100%', display: 'block' }} 
           />
           
