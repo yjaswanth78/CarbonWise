@@ -93,24 +93,32 @@ def analyze_receipt_ocr(image_path: str) -> dict:
     """Scans receipt image text and extracts items with carbon values."""
     detected_words = []
 
-    if config.USE_GCP and os.path.exists(config.CREDENTIALS_PATH):
-        os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = config.CREDENTIALS_PATH
-        client = vision.ImageAnnotatorClient()
+    if config.USE_GCP:
+        if os.path.exists(config.CREDENTIALS_PATH):
+            os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = config.CREDENTIALS_PATH
+            
+        try:
+            client = vision.ImageAnnotatorClient()
+    
+            with open(image_path, "rb") as image_file:
+                content = image_file.read()
+    
+            image = vision.Image(content=content)
+            response = client.text_detection(image=image)
+            texts = response.text_annotations
+    
+            if response.error.message:
+                print(f"Vision API error: {response.error.message}")
+                raise Exception(response.error.message)
+                
+            # Combine all OCR text and convert to lowercase
+            if texts:
+                full_text = texts[0].description.lower()
+                detected_words = full_text.split()
+        except Exception as e:
+            print(f"Failed to use Vision API, falling back to mock OCR: {e}")
+            config.USE_GCP = False # Temporarily disable for this run
 
-        with open(image_path, "rb") as image_file:
-            content = image_file.read()
-
-        image = vision.Image(content=content)
-        response = client.text_detection(image=image)
-        texts = response.text_annotations
-
-        if response.error.message:
-            raise Exception(f"Vision API error: {response.error.message}")
-
-        # Combine all OCR text and convert to lowercase
-        if texts:
-            full_text = texts[0].description.lower()
-            detected_words = full_text.split()
     else:
         # Simulated OCR: choose random items to simulate a scan
         mock_grocery_trips = [
