@@ -1,77 +1,66 @@
-# CarbonWise: AI-Powered Carbon Footprint Tracker
+# 🌍 CarbonWise
+**AI-Powered Gamified Carbon Footprint Tracker**
 
-CarbonWise is a gamified, AI-driven carbon tracking and reduction application designed for the **PromptWars** competition. It automates footprint logging through smart features like calendar syncing, grocery receipt scanning, standby energy audits, and neighborhood tool sharing, replacing tedious manual data entry.
+[![Live Demo](https://img.shields.io/badge/Live_Demo-Click_Here-success?style=for-the-badge)](https://carbonwise-365027537314.us-central1.run.app)
+*(Deployed on Google Cloud Run)*
 
----
-
-## Key Features
-
-1. **Live Virtual EcoSphere**: An interactive HTML5 Canvas visual representation of a floating island. The ecosystem blooms (spawns green leaves, flowers, sunny sky) when you save carbon, and decays (spawns barren trees, gray smog clouds) when carbon footprint is neglected.
-2. **Carbon Debt Clock**: Measures carbon as a financial debt to the Earth. Completing daily/weekly quests functions as "debt payments" ticking down the clock in real-time.
-3. **Receipt Scanner (Smart Pantry)**: Scans grocery bill images (supports real GCP Cloud Vision OCR or offline simulation mode), identifies high-impact food purchases (like beef and dairy), and suggests eco-friendly swaps (like chicken or oat milk).
-4. **Life-Sync (Transit Optimization)**: Connects to your daily schedule calendar, optimizes commute routes, calculates vehicle vs. metro emissions, and rewards public transportation choices.
-5. **Home-Audit (Phantom Loads)**: An interactive checklist identifying appliances consuming power while on standby. Shows real-time savings after turning off TVs, unplugging unused phone chargers, and shutting down game consoles.
-6. **Eco-Xchange (P2P Lending)**: A community marketplace allowing neighbors to borrow low-use items (tents, ladders, drills) instead of buying new products. Tracks carbon emissions avoided by sharing.
-7. **Social Leaderboard & Badge Cabinet**: Compete with college peers and neighbors to earn titles like *Transit Hero*, *Pantry Warden*, and *Grid Saver*.
+CarbonWise is a gamified, AI-driven carbon tracking and reduction application designed for the **PromptWars** competition. It automates footprint logging through smart features like grocery receipt scanning, standby energy audits, and neighborhood tool sharing, replacing tedious manual data entry with engaging, automated feedback.
 
 ---
 
-## Tech Stack
+## 🚀 The Vision
 
-- **Frontend**: React (Vite) + Glassmorphic Vanilla CSS (Outfit & Jakarta fonts) + Lucide Icons.
-- **Backend**: Python + FastAPI + SQLite (SQLAlchemy ORM) + Google Cloud Vision (OCR) + Google Cloud Storage (Bucket uploads).
-
----
-
-## 🚀 Quick Start (Local Run)
-
-We have transformed the architecture into a **Single Application Server**. The FastAPI backend automatically builds the React frontend and serves both the API and the web interface from a single port!
-
-### Instructions:
-1. Open your terminal in the project directory.
-2. Run the startup script:
-   ```bash
-   python run.py
-   ```
-3. The script will automatically:
-   - Install all required Python backend dependencies.
-   - Install Node Modules and build the React frontend (`npm install && npm run build`).
-   - Launch the unified Server on **[http://localhost:8000](http://localhost:8000)**.
+Tracking your carbon footprint shouldn't feel like doing taxes. CarbonWise transforms sustainability into an engaging, visual, and socially rewarding experience. By framing your footprint as a "Carbon Debt", every eco-friendly action you take—from swapping beef for chicken to unplugging vampire appliances—acts as a debt payment that visibly heals your personal virtual ecosystem.
 
 ---
 
-## ☁️ Deploying to Google Cloud Run
+## ✨ Key Features
 
-This project includes a `Dockerfile` pre-configured to build the frontend and serve it alongside the Python backend in a single container.
+🌱 **Live Virtual EcoSphere**
+An interactive visual representation of a floating island. The ecosystem blooms (spawns green leaves, flowers, sunny sky) when you save carbon, and decays (spawns barren trees, gray smog) when your carbon footprint is neglected.
 
-### Deployment Instructions:
-1. Open [Google Cloud Console](https://console.cloud.google.com/) and launch **Cloud Shell**.
-2. Clone your repository:
+💳 **Carbon Debt Clock**
+Measures your carbon emissions as a financial debt to the Earth. Completing daily and weekly quests functions as "debt payments" ticking down the clock in real-time.
+
+🧾 **AI Receipt Scanner (Smart Pantry)**
+Powered by **Google Cloud Vision OCR**. Snap a photo of your grocery bill, and the AI instantly identifies high-impact food purchases (like beef and dairy) and calculates their carbon cost while suggesting eco-friendly swaps. Images are securely stored in **Google Cloud Storage**.
+
+🔌 **Home-Audit (Phantom Loads)**
+An interactive checklist identifying appliances consuming power while on standby. Shows real-time savings after turning off TVs, unplugging unused phone chargers, and shutting down game consoles.
+
+🔄 **Eco-Xchange (P2P Lending)**
+A community marketplace allowing neighbors to borrow low-use items (tents, ladders, drills) instead of buying new products. The app tracks the exact carbon emissions avoided by sharing instead of manufacturing new items.
+
+🏆 **Social Leaderboard & Badges**
+Compete with peers and neighbors to earn titles like *Transit Hero*, *Pantry Warden*, and *Grid Saver*.
+
+---
+
+## 💻 Tech Stack
+
+- **Frontend**: React.js (Vite), Glassmorphic Vanilla CSS, Lucide Icons
+- **Backend**: Python, FastAPI, SQLite (SQLAlchemy ORM)
+- **AI & Cloud Services**: Google Cloud Vision API (OCR), Google Cloud Storage (GCS Bucket), Google Cloud Run
+
+---
+
+## 🛠️ How to Run Locally
+
+CarbonWise uses a streamlined **Single Application Server** architecture. The FastAPI backend automatically builds and serves the React frontend, meaning you only need one terminal to run the entire full-stack application!
+
+1. **Clone the repository:**
    ```bash
    git clone https://github.com/yjaswanth78/CarbonWise.git
    cd CarbonWise
    ```
-3. Grant permissions to the default build service account:
+
+2. **Run the startup script:**
    ```bash
-   gcloud projects add-iam-policy-binding YOUR_PROJECT_ID --member="serviceAccount:YOUR_PROJECT_NUMBER-compute@developer.gserviceaccount.com" --role="roles/editor"
+   python run.py
    ```
-4. Deploy the application:
-   ```bash
-   gcloud run deploy carbonwise --source . --region=us-central1 --allow-unauthenticated
-   ```
+   *This script automatically creates your virtual environment, installs Python dependencies, builds the Node.js frontend, and starts the unified server.*
 
-*Once deployed, Google Cloud will provide you with a live `https://...` link to view your application!*
+3. **Open your browser:**
+   Navigate to [http://localhost:8000](http://localhost:8000)
 
----
-
-## ☁️ Google Cloud Integrations
-
-The application supports real Google Cloud Storage (for permanently saving uploaded images) and Google Cloud Vision (for AI-powered OCR scanning). 
-
-By default, the application uses these GCP services. If you do not have GCP setup, you can revert back to "Local Simulation Mode".
-
-**To configure GCP:**
-1. Open `backend/app/config.py`.
-2. Set `USE_GCP = True`.
-3. Set your `BUCKET_NAME` to your actual GCS bucket name (e.g. `carbonwise-receipts`).
-4. Ensure your project has the **Cloud Vision API** and **Cloud Storage API** enabled. When deployed on Cloud Run, the credentials are automatically handled securely!
+*(Note: The application is pre-configured to gracefully fall back to local simulated OCR if Google Cloud credentials are not detected on your local machine).*
