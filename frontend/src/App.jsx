@@ -15,13 +15,15 @@ import {
   LogOut
 } from 'lucide-react'
 
-// Subcomponents (we will create these next)
-import Dashboard from './components/Dashboard'
-import LifeSync from './components/LifeSync'
-import ReceiptScanner from './components/ReceiptScanner'
-import HomeAudit from './components/HomeAudit'
-import EcoXchange from './components/EcoXchange'
-import Leaderboard from './components/Leaderboard'
+import { Suspense, lazy } from 'react'
+
+// Subcomponents lazy loaded for efficiency (Code-Splitting)
+const Dashboard = lazy(() => import('./components/Dashboard'))
+const LifeSync = lazy(() => import('./components/LifeSync'))
+const ReceiptScanner = lazy(() => import('./components/ReceiptScanner'))
+const HomeAudit = lazy(() => import('./components/HomeAudit'))
+const EcoXchange = lazy(() => import('./components/EcoXchange'))
+const Leaderboard = lazy(() => import('./components/Leaderboard'))
 
 const API_BASE = '/api'
 
@@ -545,24 +547,26 @@ export default function App() {
 
         {/* Dynamic Panels */}
         <main className="animate-slide-up" style={{ flex: 1 }}>
-          {activeTab === 'dashboard' && (
-            <Dashboard userProfile={userProfile} refreshProfile={fetchProfile} API_BASE={API_BASE} />
-          )}
-          {activeTab === 'lifesync' && (
-            <LifeSync username={username} refreshProfile={fetchProfile} API_BASE={API_BASE} />
-          )}
-          {activeTab === 'scanner' && (
-            <ReceiptScanner username={username} refreshProfile={fetchProfile} API_BASE={API_BASE} />
-          )}
-          {activeTab === 'audit' && (
-            <HomeAudit username={username} refreshProfile={fetchProfile} API_BASE={API_BASE} />
-          )}
-          {activeTab === 'xchange' && (
-            <EcoXchange username={username} refreshProfile={fetchProfile} API_BASE={API_BASE} />
-          )}
-          {activeTab === 'leaderboard' && (
-            <Leaderboard username={username} API_BASE={API_BASE} />
-          )}
+          <Suspense fallback={<div style={{ padding: '2rem', textAlign: 'center', color: 'var(--text-muted)' }}>Loading module...</div>}>
+            {activeTab === 'dashboard' && (
+              <Dashboard userProfile={userProfile} refreshProfile={fetchProfile} API_BASE={API_BASE} />
+            )}
+            {activeTab === 'lifesync' && (
+              <LifeSync username={username} refreshProfile={fetchProfile} API_BASE={API_BASE} />
+            )}
+            {activeTab === 'scanner' && (
+              <ReceiptScanner username={username} refreshProfile={fetchProfile} API_BASE={API_BASE} />
+            )}
+            {activeTab === 'audit' && (
+              <HomeAudit username={username} refreshProfile={fetchProfile} API_BASE={API_BASE} />
+            )}
+            {activeTab === 'xchange' && (
+              <EcoXchange username={username} refreshProfile={fetchProfile} API_BASE={API_BASE} />
+            )}
+            {activeTab === 'leaderboard' && (
+              <Leaderboard username={username} API_BASE={API_BASE} />
+            )}
+          </Suspense>
         </main>
       </div>
 

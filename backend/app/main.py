@@ -11,22 +11,44 @@ from datetime import datetime
 from .database import engine, Base, get_db
 from . import models, schemas, services, config
 
+from fastapi.middleware.gzip import GZipMiddleware
+from starlette.middleware.base import BaseHTTPMiddleware
+from starlette.requests import Request
+
 # Create Database tables
 Base.metadata.create_all(bind=engine)
 
 app = FastAPI(title="CarbonWise Backend API")
 
+# Add GZip compression for efficiency
+app.add_middleware(GZipMiddleware, minimum_size=1000)
+
+class SecurityHeadersMiddleware(BaseHTTPMiddleware):
+    async def dispatch(self, request: Request, call_next):
+        response = await call_next(request)
+        response.headers["X-Content-Type-Options"] = "nosniff"
+        response.headers["X-Frame-Options"] = "DENY"
+        response.headers["X-XSS-Protection"] = "1; mode=block"
+        response.headers["Strict-Transport-Security"] = "max-age=31536000; includeSubDomains"
+        return response
+
+app.add_middleware(SecurityHeadersMiddleware)
+
 # Add CORS Middleware to connect with React Frontend
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # For dev: allow any origin
+    allow_origins=["*"],  # Allow all origins for dev/hackathon
     allow_credentials=True,
-    allow_methods=["*"],
+    allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allow_headers=["*"],
 )
 
 # Serve local uploads folder
 app.mount("/uploads", StaticFiles(directory=config.UPLOAD_DIR), name="uploads")
+
+@app.get("/api/health")
+def health_check():
+    return {"status": "ok", "message": "API is secure and efficient!"}
 
 # Populate Default Quests in DB on Startup
 @app.on_event("startup")

@@ -6,3 +6,5 @@ email-validator
 python-multipart
 google-cloud-storage
 google-cloud-vision
+pytest
+httpx
