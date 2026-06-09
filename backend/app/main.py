@@ -355,3 +355,24 @@ def borrow_item(
 def get_leaderboard(db: Session = Depends(get_db)):
     # Rank users by carbon saved, secondary by eco points
     return db.query(models.User).order_by(models.User.co2_saved.desc(), models.User.eco_points.desc()).limit(10).all()
+
+# --- SERVE REACT FRONTEND ---
+from fastapi.responses import FileResponse
+
+frontend_dist = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), "frontend", "dist")
+
+@app.get("/{full_path:path}")
+def serve_frontend(full_path: str):
+    # Prevent API 404s from returning HTML
+    if full_path.startswith("api/"):
+        raise HTTPException(status_code=404, detail="API route not found")
+        
+    file_path = os.path.join(frontend_dist, full_path)
+    if os.path.exists(file_path) and os.path.isfile(file_path):
+        return FileResponse(file_path)
+        
+    index_path = os.path.join(frontend_dist, "index.html")
+    if os.path.exists(index_path):
+        return FileResponse(index_path)
+    
+    return {"message": "Frontend not built. Please run npm run build in the frontend directory."}
